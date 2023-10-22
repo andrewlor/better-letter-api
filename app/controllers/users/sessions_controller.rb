@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  include RackSessionFixController
+
   respond_to :json
 
   private
 
   def respond_with(resource, _opts={})
-    render json: { message: "Welcome, you're in", user: current_user }, status: :ok
+    render json: current_user, status: :ok
   end
 
   def respond_to_on_destroy
@@ -15,10 +17,10 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def successful_logout
-    render json: { message: "You've logged out" }, status: :ok
+    render status: :ok
   end
 
   def failed_logout
-    render json: { message: "Something went wrong." }, status: :unauthorized
+    render json: "Something went wrong.", status: :unauthorized
   end
 end

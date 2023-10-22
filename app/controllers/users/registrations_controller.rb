@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  include RackSessionFixController
+
   respond_to :json
 
   private
@@ -11,10 +13,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def successful_registration
-    render json: { message: "You've registered successfully", user: current_user }, status: :ok
+    render json: current_user, status: :ok
   end
 
   def failed_registration
-    render json: { message: "Something went wrong. Please try again" }, status: :unprocessable_entity
+    render json: "Something went wrong. Please try again", status: :unprocessable_entity
   end
 end
